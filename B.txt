@@ -1,0 +1,41 @@
+create model with migration file:
+	Booking
+	Flight
+
+in Migration file
+
+Schema::create('flights', function (Blueprint $table) {
+            $table->id();
+            $table->string('departureAirport');
+            $table->string('arrivalAirport');
+            $table->dateTime('departureDate');
+            $table->integer('availablePassenger');
+            $table->timestamps();
+        });
+
+Schema::dropIfExists('flights');
+
+Schema::create('bookings', function (Blueprint $table) {
+            $table->id();
+            $table->integer('flightNumber');
+            $table->string('passengerName');
+            $table->date('passengerDOB');
+            $table->timestamps();
+        });
+
+Schema::dropIfExists('bookings');
+
+API.php
+
+Route::post("flight/search",function(Request $request)
+{    
+    // return Flight::all();
+    return Flight::where('departureAirport',$request->departureAirport)
+                   ->where('arrivalAirport',$request->arrivalAirport)
+                   ->where('departureDate',$request->departureDate)
+                   ->where('availablePassenger',$request->passengerNumber)
+                    ->get();
+});
+
+
+B-lab8
